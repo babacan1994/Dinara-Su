@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1769d2">
+  <meta name="description" content="Su faturası ödeme bağlantısı">
+  <title>DINARA</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #1769d2;
+    }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    main {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 24px 16vh;
+    }
+    .water-mark {
+      font-size: clamp(76px, 19vw, 112px);
+      line-height: 1;
+      margin-bottom: 34px;
+      filter: drop-shadow(0 3px 0 rgba(0,0,0,.08));
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      max-width: 100%;
+    }
+    .number {
+      font-size: clamp(30px, 9vw, 54px);
+      font-weight: 800;
+      letter-spacing: 1px;
+      overflow-wrap: anywhere;
+      text-align: center;
+    }
+    .copy {
+      flex: 0 0 auto;
+      width: 66px;
+      height: 66px;
+      border: 0;
+      border-radius: 14px;
+      background: white;
+      color: #1769d2;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    h1 {
+      margin: 34px 0 92px;
+      text-align: center;
+      font-size: clamp(42px, 13vw, 68px);
+      line-height: 1.1;
+      font-weight: 800;
+    }
+    .pay {
+      width: 100%;
+      max-width: 760px;
+      min-height: 112px;
+      padding: 16px;
+      border: 0;
+      border-radius: 14px;
+      background: white;
+      color: #1769d2;
+      font-size: clamp(22px, 6vw, 34px);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .pay:active, .copy:active { transform: scale(.99); }
+    @media (max-height: 650px) {
+      main { padding-bottom: 8vh; }
+      .water-mark { margin-bottom: 16px; }
+      h1 { margin: 22px 0 44px; }
+      .pay { min-height: 82px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="water-mark" aria-hidden="true">💧</div>
+    <div class="row">
+      <div class="number" id="subscriberNumber">ABONE-NUMARASI</div>
+      <button class="copy" id="copyButton" type="button" aria-label="Abone numarasını kopyala">▢</button>
+    </div>
+    <h1>⚡ DINARA ⚡</h1>
+    <button class="pay" id="payButton" type="button">💧 SU FATURASI ÖDE</button>
+  </main>
+  <script>
+    // Su abone numarası geldiğinde yalnızca bu değeri güncelleyin.
+    const subscriberNumber = "ABONE-NUMARASI";
+    document.getElementById("copyButton").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(subscriberNumber);
+      } catch (e) {
+        const field = document.createElement("textarea");
+        field.value = subscriberNumber;
+        document.body.appendChild(field);
+        field.select();
+        document.execCommand("copy");
+        field.remove();
+      }
+    });
+    document.getElementById("payButton").addEventListener("click", () => {
+      window.location.href = "https://gonyeli-alaykoy.org/vezne/BorcSorgu.aspx?t=1";
+    });
+    if ("serviceWorker" in navigator && location.protocol === "https:") {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
